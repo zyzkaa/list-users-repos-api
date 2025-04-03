@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import wiremock.com.fasterxml.jackson.core.JsonProcessingException;
+import wiremock.com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
 
@@ -21,13 +23,10 @@ public class Controller {
     }
 
     @GetMapping("/{username}")
-    public ResponseEntity<RepoResponseDto[]> getRepoList(@PathVariable String username){
+    public ResponseEntity<RepoResponseDto[]> getRepoList(@PathVariable String username) throws JsonProcessingException {
         RepoDto[] repos = githubFetchSerivce.fetchRepos(username);
-        ArrayList<RepoResponseDto> responseRepos = new ArrayList<RepoResponseDto>();
+        ArrayList<RepoResponseDto> responseRepos = new ArrayList<>();
         for(RepoDto repo : repos){
-            if(repo.isFork()){
-                continue;
-            }
             ArrayList<BranchResponseDto> responseBranches = new ArrayList<BranchResponseDto>();
             for (BranchDto branch : repo.getBranches()) {
                 responseBranches.add(new BranchResponseDto(branch.getName(), branch.getCommit().getSha()));

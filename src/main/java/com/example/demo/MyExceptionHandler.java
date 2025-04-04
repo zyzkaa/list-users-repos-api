@@ -7,12 +7,6 @@ import org.springframework.web.client.HttpClientErrorException;
 
 @RestControllerAdvice
 public class MyExceptionHandler {
-//    @ExceptionHandler(HttpMediaTypeNotAcceptableException.class)
-//    public ResponseEntity<ErrorResponse> handleNotFound(HttpMediaTypeNotAcceptableException e) {
-//
-//        return ResponseEntity.status(e.getStatusCode()).body(new ErrorResponse(e.getStatusCode(), e.getMessage()));
-//    }
-
     @ExceptionHandler(HttpClientErrorException.class)
     public ResponseEntity<ErrorResponse> handleNotFound(HttpClientErrorException e) {
         return ResponseEntity.status(e.getStatusCode()).body(new ErrorResponse(e.getStatusCode(), e.getMessage()));
